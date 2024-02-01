@@ -4,13 +4,12 @@ import Context from '../../ContextWrapper';
 export default function Delete() {
     const { setOpen, setCardsArr, activeCard } = useContext(Context);
 
-    const deleteCard = async () => {
-        await fetch(`http://localhost:3000/cards/${activeCard.id}`, {
+    const deleteCard = async () =>
+        await fetch(`http://localhost:3000/cards/${activeCard._id}`, {
             method: 'DELETE'
         })
-            .then((response) => response.json())
-            .catch((error) => console.log(error));
-    }
+            .then((response) => response)
+            .catch((error) => console.log(error))
 
     return (
         <>
@@ -24,15 +23,12 @@ export default function Delete() {
                     <p className="text-black text-xl font-bold font-['Inter']">Close</p>
                 </button>
                 <button
-                    onClick={() => {
-                        setCardsArr(prev => prev.filter(async item => {
-                            const res = await deleteCard();
-                            if (res != null && res.ok) {
-                                item != activeCard;
-                                setOpen(false);
-                            }
-                        }));
-
+                    onClick={async () => {
+                        const res = await deleteCard();
+                        if (res != null && res.ok) {
+                            setCardsArr(prev => prev.filter(item => item != activeCard));
+                            setOpen(false);
+                        }
                     }}
                     className='w-[127px] h-[61px] bg-amber-400 rounded-[15px] text-center hover:bg-amber-500'>
                     <p className="text-center text-black text-xl font-bold font-['Inter']">Delete</p>

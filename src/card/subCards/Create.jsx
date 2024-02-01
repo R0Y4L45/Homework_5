@@ -7,13 +7,11 @@ export default function () {
     const { open, setOpen, setCardsArr, email } = useContext(Context);
 
     async function saveAddedCard() {
-        const obj = await createCard();
-        if (obj != null && obj.oks)
-            setCardsArr(prev => [...prev, {
-                id: obj.id,
-                title: obj.title,
-                description: obj.description
-            }]);
+        let obj = await createCard();
+        if (obj != null && obj.ok) {
+            obj = await obj.json();
+            setCardsArr(prev => [...prev, obj]);
+        }
     }
 
     const createCard = async () =>

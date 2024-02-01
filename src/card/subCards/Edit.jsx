@@ -3,34 +3,30 @@ import Context from '../../ContextWrapper';
 
 export default function Edit() {
     const { setOpen, setCardsArr, activeCard, setActiveCard } = useContext(Context);
+    let cardObj = {
+        _id: activeCard._id,
+        title: activeCard.title,
+        description: activeCard.description
+    };
 
     function handleChange(prop, typeOfProp) {
-        let cardObj = {
-            id: activeCard.id,
-            title: activeCard.title,
-            description: activeCard.description
-        };
-
         if (typeOfProp) cardObj.title = prop;
         else cardObj.description = prop
 
         setActiveCard(cardObj);
     }
 
-    const editCard = async obj => {
-        fetch(`http://localhost:3000/cards/${activeCard.id}`, {
+    const editCard = async obj =>
+        fetch(`http://localhost:3000/cards/${activeCard._id}`, {
             method: 'PUT',
-            body: JSON.stringify({
-                title: obj.title,
-                description: obj.description
-            }),
+            body: obj,
             headers: {
-                'Content-type': 'application/json; charset=UTF-8',
-            },
+                'Content-type': 'application/json; charset=UTF-8'
+            }
         })
-            .then((response) => response.json())
-            .then((json) => console.log(json));
-    }
+            .then(response => response)
+            .catch(error => console.log(error));
+
 
     return (
         <>
@@ -52,19 +48,21 @@ export default function Edit() {
                         <p className="text-black text-xl font-bold font-['Inter']">Close</p>
                     </button>
                     <button
-                        onClick={() => {
-                            setCardsArr(prev => prev.map(async item => {
-                                if (item.id == activeCard.id) {
-                                    const res = await editCard(JSON.stringify(cardObj));
-                                    if (res != null && res.ok) {
+                        onClick={async () => {
+                            let res = await editCard(JSON.stringify(cardObj));
+                            if (res != null && res.ok) {
+                                res = await res.json();
+                                setCardsArr(prev => prev.map(item => {
+                                    if (item._id === res._id) {
                                         item.title = res.title;
                                         item.description = res.description;
                                     }
-                                }
-                                return item;
-                            }));
 
-                            setOpen(false);
+                                    return item;
+                                }));
+
+                                setOpen(false);
+                            }
                         }}
                         className='w-[127px] h-[61px] bg-amber-400 rounded-[15px] text-center hover:bg-amber-500'>
                         <p className="text-center text-black text-xl font-bold font-['Inter']">Save</p>

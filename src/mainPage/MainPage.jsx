@@ -31,11 +31,11 @@ export default function MainPage() {
 
     const getCards = async () => {
         const res = await fetch(`http://localhost:3000/cards/${email}`)
-            .then(response => response.json())
+            .then(response => response)
             .catch(error => console.log(error))
 
         if (res != null && res.ok)
-            setCardsArr(res);
+            setCardsArr(await res.json());
     };
 
     return (
@@ -52,7 +52,7 @@ export default function MainPage() {
                     <div className="text-zinc-500 text-l sm:text-5xl font-bold font-['Inter'] flex item-center justify-center">NO CARDS...</div> :
                     <div className='grid grid-cols-1 sm:grid-cols-3 gap-4'>
                         {
-                            cardsArr.map(item => <ToDoCard dispatch={dispatch} obj={item} key={item.id} />)
+                            cardsArr.map(item => <ToDoCard dispatch={dispatch} obj={item} key={item._id} />)
                         }
                     </div>
             }
