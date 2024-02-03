@@ -4,8 +4,8 @@ import Delete from './subCards/Delete'
 import Edit from './subCards/Edit'
 import Context from '../ContextWrapper';
 
-export default function Card({ state }) {
-    const { open, setOpen } = useContext(Context);
+export default function Card() {
+    const { open, setOpen, state } = useContext(Context);
 
     return (
         <div

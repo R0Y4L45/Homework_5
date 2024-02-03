@@ -20,7 +20,7 @@ export default function () {
             body: JSON.stringify({
                 title: title,
                 description: description,
-                author: email,
+                author: email
             }),
             headers: {
                 'Content-type': 'application/json'

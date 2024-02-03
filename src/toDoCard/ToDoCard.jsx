@@ -1,8 +1,8 @@
 import React, { useContext } from 'react'
 import Context from '../ContextWrapper';
 
-export default function ToDoCard({ dispatch, obj }) {
-    const { setOpen, setActiveCard } = useContext(Context);
+export default function ToDoCard({ obj }) {
+    const { setOpen, setActiveCard, dispatch } = useContext(Context);
 
     function handleClick(card) {
         setActiveCard(obj);

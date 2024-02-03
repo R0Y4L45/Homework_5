@@ -1,24 +1,13 @@
-import React, { useReducer, useState, useEffect, useContext } from 'react'
+import React, { useEffect, useContext } from 'react'
 import ToDoCard from '../toDoCard/ToDoCard'
 import Card from '../card/Card'
 import Navbar from '../navbar/Navbar'
 import Context from '../ContextWrapper'
 
-const reducer = (state, action) => {
-    switch (action.type) {
-        case 'create':
-            return { type: (state.type = 'CREATE CARD') }
-        case 'delete':
-            return { type: (state.type = 'DELETE CARD') }
-        case 'edit':
-            return { type: (state.type = 'EDIT CARD') }
-        default: return state
-    }
-}
+
 
 export default function MainPage() {
-    const { setOpen, open, cardsArr, setCardsArr, email } = useContext(Context)
-    const [state, dispatch] = useReducer(reducer, { type: "" })
+    const { setOpen, open, cardsArr, dispatch, setCardsArr, email } = useContext(Context)
 
     useEffect(() => {
         const html = document.querySelector("html");
@@ -52,11 +41,11 @@ export default function MainPage() {
                     <div className="text-zinc-500 text-l sm:text-5xl font-bold font-['Inter'] flex item-center justify-center">NO CARDS...</div> :
                     <div className='grid grid-cols-1 sm:grid-cols-3 gap-4'>
                         {
-                            cardsArr.map(item => <ToDoCard dispatch={dispatch} obj={item} key={item._id} />)
+                            cardsArr.map(item => <ToDoCard obj={item} key={item._id} />)
                         }
                     </div>
             }
-            <Card state={state} />
+            <Card />
         </div>
     )
 }

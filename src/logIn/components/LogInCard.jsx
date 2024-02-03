@@ -1,5 +1,6 @@
 import { useContext, useState } from "react"
 import Context from "../../ContextWrapper";
+import { useNavigate } from "react-router-dom";
 
 function getstringLen(str) {
   return str.length;
@@ -8,6 +9,7 @@ function getstringLen(str) {
 export default function LogInCard() {
   const { setAuthorized, setEmail, email } = useContext(Context);
   const [isValid, setIsValid] = useState(false);
+  const navigate = useNavigate();
 
   return (
     <form className="flex flex-col items-center h-screen w-screen sm:w-[700px] sm:h-[310px] shadow-md shadow-zinc-300 justify-center rounded-[13px]">
@@ -29,6 +31,7 @@ export default function LogInCard() {
             setAuthorized(true);
             localStorage.setItem('email', email);
             localStorage.setItem('authorize', true);
+            navigate('/mainpage');
           }
         }}
         className={`${isValid ?
